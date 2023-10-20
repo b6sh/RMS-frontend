@@ -26,7 +26,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         axios
             .post('/register', props)
-            .then(() => mutate())
+            .then(() => {
+                if (middleware === 'guest' && redirectIfAuthenticated && user){
+                    router.push(redirectIfAuthenticated)
+                }
+            })
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
@@ -99,7 +103,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user){
-            console.log(redirectIfAuthenticated)
             router.push(redirectIfAuthenticated)
         }
 
