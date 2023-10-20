@@ -17,7 +17,7 @@ const Login = () => {
 
     const { login } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard`,
+        redirectIfAuthenticated: `/dashboard`,
     })
 
     const [email, setEmail] = useState('')
