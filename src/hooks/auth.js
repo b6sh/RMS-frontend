@@ -26,11 +26,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         axios
             .post('/register', props)
-            .then(() => {
-                if (middleware === 'guest' && redirectIfAuthenticated && user){
-                    router.push(redirectIfAuthenticated)
-                }
-            })
+            .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
@@ -102,10 +98,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
-        if (middleware === 'guest' && redirectIfAuthenticated && user){
+        if (middleware === 'guest' && redirectIfAuthenticated && user)
             router.push(redirectIfAuthenticated)
-        }
-
         if (
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
