@@ -9,7 +9,7 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>Laravel</title>
+                <title>RMS</title>
             </Head>
 
 
