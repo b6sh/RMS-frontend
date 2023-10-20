@@ -20,7 +20,7 @@ export default function Home() {
                         <ApplicationLogo className="h-60"/>
                     </div>
                     <div>
-                        <h1 className="text-4xl text-green-800 font-semibold mt-5">Request Management System</h1>
+                        <h1 className="text-4xl text-center text-green-800 font-semibold mt-5">Request Management System</h1>
                     </div>
                     <div className="h-20 mt-20 w-auto text-gray-700  flex justify-center">
                         {user ? (
