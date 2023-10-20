@@ -10,13 +10,14 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import process from 'next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss'
 
 const Login = () => {
     const router = useRouter()
 
     const { login } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard`,
     })
 
     const [email, setEmail] = useState('')
