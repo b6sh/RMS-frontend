@@ -1,15 +1,18 @@
-import AppLayout from '@/components/Layouts/AppLayout'
-import Head from 'next/head'
-import Label from '@/components/Label'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Link from 'next/link'
-import Button from '@/components/Button'
-import InputSelect from '@/components/inputSelect'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from '@/lib/axios'
 import { mutate } from 'swr'
+import Head from 'next/head'
+import Link from 'next/link'
+import Spinner from '@/components/Spinner'
+import Button from '@/components/Button'
+import InputSelect from '@/components/inputSelect'
+import InputError from '@/components/InputError'
+import Label from '@/components/Label'
+import Input from '@/components/Input'
+import AppLayout from '@/components/Layouts/AppLayout'
+import SuccessMessage from '@/components/SuccessMessage'
+import InputArea from '@/components/InputArea'
 
 const Request = () => {
     const router = useRouter()
@@ -18,6 +21,7 @@ const Request = () => {
     const [description, setDescription] = useState('')
     const [status, setStatus] = useState('0')
     const [errors, setErrors] = useState([])
+    const [loading, setLoading] = useState(false); // Add loading state
     const [successMessage, setSuccessMessage] = useState('')
     const submitForm = async event => {
         event.preventDefault()
@@ -25,21 +29,22 @@ const Request = () => {
         await axios.get('/sanctum/csrf-cookie')
 
         setErrors([])
+        setLoading(true);
 
         axios
-            .post('/api/request', {
+            .post('/api/report', {
                 title,
                 description,
                 status,
             })
             .then((response) => {
                 const createdRequest = response.data.request;
-
+                setLoading(false);
                 setSuccessMessage(
                     <div>
                         Request Created{' '}
-                        <Link href={`/request/${createdRequest.id}`}>
-                            <p>View the created request</p>
+                        <Link href={`/request/${createdRequest.id}`} className="underline font-extrabold pt-3">
+                            <p>View New Request</p>
                         </Link>
                     </div>
                 );
@@ -47,10 +52,10 @@ const Request = () => {
                 setDescription('');
                 setStatus('0');
 
-                setTimeout(() => setSuccessMessage(''), 5000);
                 mutate()
             })
             .catch(error => {
+                setLoading(false);
                 if (error.response.status !== 422) throw error
                 setErrors(error.response.data.errors)
             })
@@ -67,9 +72,19 @@ const Request = () => {
             <Head>
                 <title>New Request</title>
             </Head>
+
+            {loading && (
+                <Spinner />
+            )}
+
+            <div className="">
+                {successMessage && (
+                    <SuccessMessage message={successMessage}/>
+                )}
+            </div>
             <div className="py-12 ">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg md:mx-60">
                         <div className="p-6 bg-white border-b border-gray-200">
 
                             <form onSubmit={submitForm}>
@@ -94,7 +109,8 @@ const Request = () => {
                                 <div className="mt-4">
                                     <Label htmlFor="description">Description</Label>
 
-                                    <Input
+                                    <InputArea
+                                        rows="4"
                                         id="description"
                                         type="text"
                                         className="block mt-1 w-full"
@@ -122,10 +138,6 @@ const Request = () => {
                                     <InputError className="mt-2" messages={errors.status} />
                                 </div>
 
-
-                                {successMessage && (
-                                    <div className="mt-4 p-2 bg-green-100 text-green-600 opacity-80 transition-opacity duration-500 rounded-md">{successMessage}</div>
-                                )}
 
                                 <div className="flex items-center justify-end mt-4">
                                     <Button className="ml-3">Create</Button>

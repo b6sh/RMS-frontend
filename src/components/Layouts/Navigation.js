@@ -118,6 +118,11 @@ const Navigation = ({ user }) => {
                             active={router.pathname === '/dashboard'}>
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/request"
+                            active={router.pathname === '/request'}>
+                            New Request
+                        </ResponsiveNavLink>
                     </div>
 
                     {/* Responsive Settings Options */}

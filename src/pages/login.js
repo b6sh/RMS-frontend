@@ -50,7 +50,7 @@ const Login = () => {
             <AuthCard
                 logo={
                     <Link href="/">
-                        <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
+                        <ApplicationLogo className="w-40 h-40 fill-current text-gray-500" />
                     </Link>
                 }>
                 {/* Session Status */}
@@ -103,7 +103,7 @@ const Login = () => {
                                 id="remember_me"
                                 type="checkbox"
                                 name="remember"
-                                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                className="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                 onChange={event =>
                                     setShouldRemember(event.target.checked)
                                 }
